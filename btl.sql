@@ -2,8 +2,12 @@
   - table product
   - id 
   - name
-  
 
+  ---------------------------------------------------
+  - nguoi dung  ==> xu ly don hang
+  - admin  ===> xu ly store
+  
+  ----------------------------------------------------
 
 -- phpMyAdmin SQL Dump
 -- version 5.2.1

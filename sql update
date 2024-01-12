@@ -1,4 +1,21 @@
+<?php
 
+// Replace these values with your actual database credentials
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "batdongsandb";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// SQL queries to create tables
+$sql_rentals = "
 CREATE TABLE IF NOT EXISTS `rentals` (
   `RentalID` int(11) NOT NULL AUTO_INCREMENT,
   `UserID` int(11) DEFAULT NULL,
@@ -65,10 +82,18 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 ";
 
+// Execute queries
+if ($conn->query($sql_userrole) === TRUE &&
+    $conn->query($sql_users) === TRUE &&
+    $conn->query($sql_storageunits) === TRUE &&
+    $conn->query($sql_rentals) === TRUE &&
+    $conn->query($sql_transactions) === TRUE) {
+    echo "Các bảng đã được tạo thành công!";
+} else {
+    echo "Lỗi khi tạo bảng: " . $conn->error;
+}
 
+// Close connection
+$conn->close();
 
-ALTER TABLE `rentals`
-ADD CONSTRAINT `fk_rentals_users`
-FOREIGN KEY (`UserID`)
-REFERENCES `users` (`UserID`)
-ON DELETE SET NULL;
+?>

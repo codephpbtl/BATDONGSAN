@@ -1,0 +1,117 @@
+*{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+li, ol, ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.favorite-btn {
+    background-color: transparent; 
+    color: #ff6b6b;
+    border: none; 
+}
+
+.favorite-btn:hover {
+    color: #ff4757;
+}
+
+.favorite-btn.active {
+    color: #ff4757;
+}
+
+.post-sort a,
+.location-city a,
+.list-links a {
+    color: black;
+    text-decoration: none; 
+}
+
+.location-city a:hover,
+.list-links a:hover {
+    color: #ff6666; 
+}
+
+
+.location-bg img {
+    width: 100%;
+    height: auto;
+    display: block;
+    }
+
+.location-city {
+  flex-basis: calc(22.222% - 20px); 
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0,0, 0, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+.location-city:hover {
+  transform: translateY(-5px);
+}
+
+.location-item {
+  display: block;
+  color: white;
+  text-decoration: none;
+}
+.location-cat {
+    box-sizing: border-box;
+    text-align: center;
+    }
+  
+  .location-name {
+  font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+  .container {
+  flex-direction: column;
+  }
+  
+  .location-city {
+  flex-basis: 100%;
+  margin: 10px 0;
+  }
+  } 
+  
+.section-sublink{
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    background: whitesmoke;
+}
+
+
+
+.image-search-container {
+    position: relative;
+    width: 100%; /* You can set this to the width of your choice */
+}
+.image-search-container img {
+    width: 100%;
+    height: auto;
+    display: block; /* Removes bottom space/line */
+}
+.search-bar {
+    position: absolute;
+    bottom: 0; /* Position at the bottom of the image container */
+    left: 0;
+    right: 0;
+    padding: 10px; /* Add some padding inside the search bar */
+    background: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+}
+.search-input {
+    border-radius: 20px;
+    padding: 10px;
+    width: 80%; /* Adjust width as needed, considering padding */
+    margin-right: 10px;
+}
+.search-button {
+    border-radius: 20px;
+    padding: 10px;
+}

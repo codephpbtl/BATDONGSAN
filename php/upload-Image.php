@@ -1,14 +1,9 @@
 <?php
-include "../../database/connectDb.php";
+include "./database/connectDb.php";
 
 // Kiểm tra xem có file đã được tải lên không
 if (isset($_FILES['image'])) {
-    $name = $_POST['name'];
-    $address = $_POST['address'];
-    $capacity = $_POST['capacity'];
-    $rate = $_POST['rate'];
-    $available = $_POST['available'];
-    $description = $_POST["description"];
+    $unitId = $_POST['unitId'];
 
     // Kiểm tra xem file đã được tải lên thành công hay không
     if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -17,11 +12,11 @@ if (isset($_FILES['image'])) {
         $imageBase64 = 'data:image/jpeg;base64,' . base64_encode($imageData);
 
         // Thêm dữ liệu vào bảng storageunits
-        $sql = "INSERT INTO storageunits (Name, Address, Image, Capacity, Rate, Available, Description) 
-                VALUES ('$name', '$address', '$imageBase64', $capacity, $rate, '$available', '$description')";
+        $sql = "INSERT INTO images (StorageUnitID,ImageData) 
+                VALUES ('$unitId','$imageBase64')";
 
         if ($conn->query($sql) === TRUE) {
-            header("Location: /php/storage.php");
+            header("Location: /php/show-image.php?UnitId=$unitId");
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }

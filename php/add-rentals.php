@@ -233,23 +233,23 @@ form select {
                 <!-- Bread crumb and right sidebar toggle -->
                 <!-- ============================================================== -->
                 <form action="./logic/rent/add_rental.php" method="post">
-                <h2>Add New Rental</h2>
-                <label for="userID">User ID:</label>
+                <h2>Thêm Hóa Đơn</h2>
+                <label for="userID">ID Người Dùng:</label>
                 <input type="text" id="userID" name="userID" required>
-                <label for="unitID">Unit ID:</label>
+                <label for="unitID">ID Nhà Kho:</label>
                 <input type="text" id="unitID" name="unitID" required>
-                <label for="startDate">Start Date:</label>
+                <label for="startDate">Ngày Bắt Đầu Thuê:</label>
                 <input type="date" id="startDate" name="startDate" required>
-                <label for="endDate">End Date:</label>
+                <label for="endDate">Ngày Kết Thúc Thuê:</label>
                 <input type="date" id="endDate" name="endDate" required>
-                <label for="totalPrice">Total Price:</label>
+                <label for="totalPrice">Tổng Tiền:</label>
                 <input type="text" id="totalPrice" name="totalPrice" required>
-                <label for="status">Status:</label>
+                <label for="status">Trạng Thái:</label>
                 <select id="status" name="status" required>
-                    <option value="Paid">Paid</option>
-                    <option value="Unpaid">Unpaid</option>
+                    <option value="Paid">Đã Thanh Toán</option>
+                    <option value="Unpaid">Chưa Thanh Toán</option>
                 </select>
-                <button type="submit">Add Rental</button>
+                <button type="submit">Thêm Hóa Đơn</button>
             </form>
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->

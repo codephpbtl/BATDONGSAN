@@ -104,7 +104,15 @@ select {
 
         <label for="rate">Tỷ Lệ:</label>
         <input type="text" id="rate" name="rate" value="<?php echo $row['Rate']; ?>" required><br>
+      
+        <label for="imagedetail">Ảnh Chi Tiết Kho Hàng</label>
+        <a href="/php/show-image.php?UnitId=<?php echo $unitId; ?>">Xem các ảnh chi tiết</a>
 
+        
+        <label for="description">Mô tả:</label>
+        <textarea rows="8" cols="42" id="description" name="description"><?php echo $row['Description']; ?></textarea><br>
+
+       
         <label for="available">Trạng Thái:</label>
         <select id="available" name="available">
             <option value="Yes" <?php echo ($row['Available'] === 'Yes') ? 'selected' : ''; ?>>Yes</option>

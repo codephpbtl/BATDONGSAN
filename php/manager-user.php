@@ -43,7 +43,7 @@ $result = $conn->query($sql);
     <meta name="description"
         content="Admin-Pro Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Admin-Pro Lite Template by WrapPixel</title>
+    <title>HTT - Admin</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/adminpro-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
@@ -253,10 +253,9 @@ $result = $conn->query($sql);
                                     <tbody>
                                     <?php
                                         if ($result !== false && $result->num_rows > 0) {
-                                            $count = 1;
                                             while ($row = $result->fetch_assoc()) {
                                                 echo "<tr>
-                                                        <td>{$count}</td>
+                                                        <td>{$row['UserID']}</td>
                                                         <td>{$row['Username']}</td>
                                                         <td class='password-cell toggle-password' data-password='{$row['Password']}'>********</td>
                                                         <td>{$row['FullName']}</td>
@@ -265,7 +264,6 @@ $result = $conn->query($sql);
                                                         <td><a target=_blank href='./rent.php?userId=$row[UserID]'>Thuê</a></td>
                                                         <td><a href='#' onclick='confirmDelete({$row['UserID']}, $currentPage)'>Delete</a></td>
                                                     </tr>";
-                                                $count++;
                                             }
                                         } else {
                                             echo "<tr><td colspan='7'>Không có người dùng nào</td></tr>";

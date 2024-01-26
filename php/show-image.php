@@ -1,39 +1,40 @@
 <?php
-    include './database/connectDb.php';
-    $totalUsers = 0;
-    $totalAdmins = 0;
+include "./database/connectDb.php";
 
-    $sqlTotalUsers = "SELECT COUNT(*) as totalUsers FROM `users` where UserRole = 2";
-    $resultTotalUsers = $conn->query($sqlTotalUsers);
-   
-    $sqlTotalAdmins =  "SELECT COUNT(*) as totalAdmins FROM `users` where UserRole = 1";
-    $resultTotalAdmins = $conn->query($sqlTotalAdmins);
-    if ($resultTotalUsers->num_rows > 0) {
-        // Lấy dữ liệu từ kết quả truy vấn
-        $row = $resultTotalUsers->fetch_assoc();
-        $rowAdmin = $resultTotalAdmins->fetch_assoc();
-        $totalUsers = $row['totalUsers'];
-        $totalAdmins = $rowAdmin['totalAdmins'];
-    } else {
-        echo "Không có dữ liệu người dùng.";
-    };
+$unitName = ""; // Khởi tạo biến $unitName trước khi sử dụng
 
-    $totalStorageUnits = 0;
-    $sqlTotalStorageUnits = "SELECT COUNT(*) as totalStorageUnits FROM `storageunits`";
-    $resultTotalStorageUnits = $conn->query($sqlTotalStorageUnits);
-   
-    if ($resultTotalStorageUnits->num_rows > 0) {
-        // Lấy dữ liệu từ kết quả truy vấn
-        $rowStorageUnits = $resultTotalStorageUnits->fetch_assoc();
-        $totalStorageUnits = $rowStorageUnits['totalStorageUnits'];
+// Kiểm tra xem có UnitId được chuyển từ trang trước không
+if (isset($_GET['UnitId'])) {
+    $unitId = $_GET['UnitId'];
+
+    // Truy vấn thông tin từ bảng storageunits
+    $storageUnitQuery = "SELECT * FROM storageunits WHERE UnitID = '$unitId'";
+    $storageUnitResult = $conn->query($storageUnitQuery);
+
+    if ($storageUnitResult->num_rows > 0) {
+        // Lấy thông tin của storage unit
+        $storageUnitData = $storageUnitResult->fetch_assoc();
+        $unitName = $storageUnitData['Name'];
     } else {
-        echo "Không có dữ liệu về storage units.";
+        echo "No storage unit found for UnitId: $unitId.";
     }
+} else {
+    echo "UnitId not provided.";
+}
 
-    $conn->close();
+            // Xử lý xóa ảnh nếu nút xóa được nhấp
+if (isset($_POST['deleteImage'])) {
+    $imageIdToDelete = $_POST['imageId'];
+        $deleteSql = "DELETE FROM images WHERE ImageID = '$imageIdToDelete'";
+            if ($conn->query($deleteSql) === TRUE) {
+                header("Location: /php/show-image.php?UnitId=1");
+            } else {
+                echo "Error deleting image: " . $conn->error;
+            }
+}
+$conn->close();
+
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,19 +54,72 @@
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
     <!-- Bootstrap Core CSS -->
     <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!-- This page CSS -->
-    <!-- chartist CSS -->
-    <link href="../assets/plugins/chartist-js/dist/chartist.min.css" rel="stylesheet">
-    <link href="../assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
-    <!--c3 CSS -->
-    <link href="../assets/plugins/c3-master/c3.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
-    <!-- Dashboard 1 Page CSS -->
-    <link href="css/pages/dashboard.css" rel="stylesheet">
     <!-- You can change the theme colors from here -->
     <link href="css/colors/default-dark.css" id="theme" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: #f8f8f8;
+            font-family: Arial, sans-serif;
+        }
+
+        .gallery {
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .image-container {
+            position: relative;
+            flex: 0 0 calc(30% - 20px);
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #fff;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .image-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            width: 110%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .delete-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff4d4d;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .delete-button:hover {
+            background-color: #ff1a1a;
+        }
+    </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -74,7 +128,7 @@
 <![endif]-->
 </head>
 
-<body class="fix-header fix-sidebar card-no-border">
+<body class="fix-header card-no-border fix-sidebar">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -84,6 +138,29 @@
             <p class="loader__label">Admin Pro</p>
         </div>
     </div>
+
+    <!-- ==============================================================-->
+    <!-- Modal Chi Tiết -->
+            <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailModalLabel">Thông Tin Kho Hàng</h5>
+                        <button type="button" class="close" onclick="closeDetailModal()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="detailModalBody">
+                        <h1>OK</h1>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeDetailModal()">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- ==============================================================-->
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -128,7 +205,8 @@
                         <!-- Search -->
                         <!-- ============================================================== -->
                         <li class="nav-item hidden-xs-down search-box"> <a
-                                class="nav-link hidden-sm-down waves-effect waves-dark" href="javascript:void(0)">
+                                class="nav-link hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"><i
+                                    class="ti-search"></i></a>
                             <form class="app-search">
                                 <input type="text" class="form-control" placeholder="Search & enter"> <a
                                     class="srh-btn"><i class="ti-close"></i></a>
@@ -184,6 +262,8 @@
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
+        <!-- modal -->
+        <!-- modal -->
         <!-- ============================================================== -->
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
@@ -192,79 +272,57 @@
             <!-- Container fluid  -->
             <!-- ============================================================== -->
             <div class="container-fluid">
+            <a href="/php/multiple-Image.php">Thêm Ảnh Chi Tiết Cho Kho</a>
+                <h2>Danh sách ảnh của store <?php echo $unitName; ?></h2>
+
+                <br>
+                <div class="row">
+                    <?php
+                    include "./database/connectDb.php";
+
+                    // Kiểm tra xem có UnitId được chuyển từ trang trước không
+                    if (isset($_GET['UnitId'])) {
+                        $unitId = $_GET['UnitId'];
+
+                        // Truy vấn ảnh từ cơ sở dữ liệu theo UnitId
+                        $sql = "SELECT * FROM images WHERE StorageUnitID = '$unitId'";
+                        $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0) {
+                            // Hiển thị mỗi ảnh dưới dạng thẻ <img> và nút xóa
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<div class="image-container">
+                                        <img src="' . $row['ImageData'] . '" alt="Image">
+                                        <form method="post">
+                                            <input type="hidden" name="imageId" value="' . $row['ImageID'] . '">
+                                            <button type="submit" class="delete-button" name="deleteImage">Delete</button>
+                                        </form>
+                                    </div>';
+                            }
+                        } else {
+                            echo "No images found for UnitId: $unitId."; 
+                        }
+                    } 
+            ?>
+        </div>
                 <!-- ============================================================== -->
                 <!-- Bread crumb and right sidebar toggle -->
                 <!-- ============================================================== -->
-                <div class="row page-titles">
-                    <div class="col-md-5 align-self-center">
-                        <h3 class="text-themecolor">Biểu Đồ</h3>
-                    </div>
-                    
-                </div>
-                <!-- ============================================================== -->
-                <!-- End Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Sales overview chart -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-lg-9 col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <div>
-                                    <h3 class="card-title mb-1"><span class="lstick"></span>Tổng Hóa Đơn</h3>
-                                </div>
-                            </div>
-                            <canvas id="rentalsChart" width="400" height="200"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="row"></div>
-                <div style="padding: 1rem">
-                    <div class="card" style="margin-bottom: 2rem;width: 25rem; background-color: #3399ff; color: white; padding-left: 1rem;">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-weight: bold;">Tổng Người Dùng Sử Dụng</h5>
-                            <p class="card-text">Người Dùng: <?php echo $totalUsers; ?></p>
-                            <p class="card-text">Admin: <?php echo $totalAdmins; ?></p>
-                        </div>
-                    </div>
-                    <div class="card" style="width: 25rem; background-color: #4CAF50; color: white; padding-left: 1rem;">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-weight: bold;">Tổng Kho Hàng</h5>
-                            <p class="card-text">Số Lượng: <?php echo $totalStorageUnits; ?></p>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
                 
-                    <!-- Projects of the month -->
                 <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Blog and website visit -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- End Page Content -->
+                <!-- End PAge Content -->
                 <!-- ============================================================== -->
             </div>
             <!-- ============================================================== -->
             <!-- End Container fluid  -->
             <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-           
+ 
             <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
         <!-- End Page wrapper  -->
         <!-- ============================================================== -->
+    </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
@@ -272,7 +330,7 @@
     <!-- All Jquery -->
     <!-- ============================================================== -->
     <script src="../assets/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap popper Core JavaScript -->
+    <!-- Bootstrap tether Core JavaScript -->
     <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
     <script src="js/perfect-scrollbar.jquery.min.js"></script>
@@ -282,66 +340,7 @@
     <script src="js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="js/custom.min.js"></script>
-    <!-- ============================================================== -->
-    <!-- This page plugins -->
-    <!-- ============================================================== -->
-    <script src="../assets/plugins/chartist-js/dist/chartist.min.js"></script>
-    <script src="../assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script>
-    <!--c3 JavaScript -->
-    <script src="../assets/plugins/d3/d3.min.js"></script>
-    <script src="../assets/plugins/c3-master/c3.min.js"></script>
-    <!-- Chart JS -->
-    <script src="js/dashboard.js"></script>
-    <script>
-        // Lấy dữ liệu từ PHP sử dụng XMLHttpRequest
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-        var data = JSON.parse(xhr.responseText);
-        console.log(data);
-        drawChart(data);
-        } else {
-        console.error("Error fetching data");
-        }
-        }
-        };
-        xhr.open("GET", "getChartData.php", true);
-        xhr.send();
 
-        // Hàm để vẽ biểu đồ
-        function drawChart(data) {
-        var labels = data.map(function (item) {
-        return item.Status;
-        });
-
-        var totalPriceSum = data.map(function (item) {
-        return item.TotalPriceSum;
-        });
-
-        var ctx = document.getElementById("rentalsChart").getContext("2d");
-        var chart = new Chart(ctx, {
-        type: "bar",
-        data: {
-        labels: labels,
-        datasets: [{
-        label: "Tổng Hóa Đơn",
-        data: totalPriceSum,
-        backgroundColor: ["green", "red"], 
-        borderColor: ["green", "red"], 
-        borderWidth: 1
-        }]
-        },
-        options: {
-        scales: {
-        y: {
-        beginAtZero: true
-        }
-        }
-        }
-        });
-        }
-    </script>
     
 </body>
 </html>

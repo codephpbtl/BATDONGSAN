@@ -229,30 +229,33 @@ form select {
             <!-- Container fluid  -->
             <!-- ============================================================== -->
 
-            <h2>Add Storage Unit</h2>
+            <h2 style="padding: 2rem;">Thêm Nhà Kho</h2>
             <form action="./logic/storage/add_storage.php" method="post" enctype="multipart/form-data">
-                <label for="name">Name:</label>
+                <label for="name">Tên Nhà Kho:</label>
                 <input type="text" id="name" name="name" required><br>
 
-                <label for="address">Address:</label>
+                <label for="address">Địa Chỉ:</label>
                 <input type="text" id="address" name="address" required><br>
 
-                <label for="image">Image:</label>
+                <label for="image">Ảnh Chính:</label>
                 <input type="file" id="image" name="image" accept="image/*"><br>
 
-                <label for="capacity">Capacity:</label>
+                <label for="capacity">Dung tích:</label>
                 <input type="number" id="capacity" name="capacity" required><br>
 
-                <label for="rate">Rate:</label>
+                <label for="rate">Tỉ Lệ:</label>
                 <input type="text" id="rate" name="rate" required><br>
 
-                <label for="available">Available:</label>
+                <label for="description">Mô Tả:</label>
+                <textarea  rows="8" cols="38"  id="description" name="description"></textarea><br>
+
+                <label for="available">Trang Thái:</label>
                 <select id="available" name="available">
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                 </select><br>
 
-                <button type="submit">Add Storage Unit</button>
+                <button type="submit">Thêm Nhà Kho</button>
             </form>
                 <!-- Row -->
                 <!-- ============================================================== -->

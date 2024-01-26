@@ -62,7 +62,7 @@ $conn->close();
     <meta name="description"
         content="Admin-Pro Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Admin-Pro Lite Template by WrapPixel</title>
+    <title>HTT - Admin</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/adminpro-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
@@ -274,7 +274,9 @@ $conn->close();
                                         </tr>
                                     <?php endforeach; ?>
                                 </table>
-                            <?php generatePagination($currentPage, $totalPages); ?>
+                                <div style="margin-top: 2rem;">
+                                    <?php generatePagination($currentPage, $totalPages); ?>
+                                </div>
                             <?php else: ?>
                                 <p>Không có dữ liệu thuê nhà.</p>
                             <?php endif; ?>             

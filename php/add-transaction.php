@@ -208,25 +208,25 @@ form select {
             <!-- Container fluid  -->
             <!-- ============================================================== -->
 
-            <h2>Thêm Giao Dịch</h2>
+            <h2 style="padding: 2rem;">Thêm Giao Dịch</h2>
             <form action="./logic/transation/add-transation.php" method="post">
-                <h2>Add New Transaction</h2>
-                <label for="rentalID">Rental ID:</label>
+                <h2>Thêm Thanh Toán</h2>
+                <label for="rentalID">ID Hóa Đơn:</label>
                 <input type="text" id="rentalID" name="rentalID" required>
 
-                <label for="paymentMethod">Payment Method:</label>
+                <label for="paymentMethod">Phương Thức Thanh Toán:</label>
                 <select id="paymentMethod" name="paymentMethod" required>
-                    <option value="CreditCard">Credit Card</option>
-                    <option value="BankTransfer">Bank Transfer</option>
+                    <option value="CreditCard">Thẻ tín dụng</option>
+                    <option value="BankTransfer">Chuyển khoản ngân hàng</option>
                 </select>
 
-                <label for="amount">Amount:</label>
+                <label for="amount">Tổng Tiền:</label>
                 <input type="text" id="amount" name="amount" required>
 
-                <label for="transactionDate">Transaction Date:</label>
+                <label for="transactionDate">Ngày Thanh Toán:</label>
                 <input type="date" id="transactionDate" name="transactionDate" required>
 
-                <button type="submit">Add Transaction</button>
+                <button type="submit">Thêm Thanh Toán</button>
             </form>
 
                 <!-- Row -->

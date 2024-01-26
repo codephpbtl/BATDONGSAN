@@ -40,7 +40,7 @@ $result = $conn->query($sql);
     <meta name="description"
         content="Admin-Pro Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Admin-Pro Lite Template by WrapPixel</title>
+    <title>HTT - Admin</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/adminpro-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
@@ -229,6 +229,8 @@ $result = $conn->query($sql);
                     </div>
                 </div>
                 <a href="/php/add-storage.php">Thêm Nhà Kho</a>
+                <br>
+                <a href="/php/multiple-Image.php">Thêm Ảnh Chi Tiết Cho Kho</a>
                 <!-- ============================================================== -->
                 <!-- End Bread crumb and right sidebar toggle -->
                 <!-- ============================================================== -->
@@ -269,7 +271,7 @@ $result = $conn->query($sql);
                                             // Lặp qua từng hàng dữ liệu
                                             while ($row = $result->fetch_assoc()) {
                                                 echo "<tr>
-                                                <td>{$count}</td>
+                                                <td>{$row['UnitID']}</td>
                                                 <td>{$row['Name']}</td>
                                                 <td>{$row['Address']}</td>
                                                 <td><img src='{$row['Image']}' alt='Hình ảnh' style='max-width: 100px; max-height: 100px;'></td>

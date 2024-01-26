@@ -62,7 +62,7 @@ $conn->close();
     <meta name="description"
         content="Admin-Pro Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Admin-Pro Lite Template by WrapPixel</title>
+    <title>HTT - Admin</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/adminpro-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
@@ -259,13 +259,13 @@ $conn->close();
                                 <form action="./logic/rent/update_status.php" method="post">
                                 <table>
                                     <tr>
-                                        <th>RentalID</th>
-                                        <th>UserFullName</th>
-                                        <th>UnitName</th>
-                                        <th>StartDate</th>
-                                        <th>EndDate</th>
-                                        <th>TotalPrice</th>
-                                        <th>Status</th>
+                                        <th>ID Hóa Đơn</th>
+                                        <th>Người Dùng</th>
+                                        <th>Tên Kho Hàng</th>
+                                        <th>Ngày Thuê Bắt Đầu</th>
+                                        <th>Ngày Thuê Kết Thúc</th>
+                                        <th>Tổng Tiền</th>
+                                        <th>Trạng Thái</th>
                                     </tr>
                                     <?php foreach ($rentalsData as $rental): ?>
                                         <tr>
@@ -278,8 +278,8 @@ $conn->close();
                                             <!-- Thêm select với sự kiện onchange và tên trường Status[] -->
                                             <td style="margin-top: 2rem ;">
                                                 <select name="Status[<?php echo $rental['RentalID']; ?>]">
-                                                    <option value="Paid" <?php echo ($rental['Status'] === 'Paid') ? 'selected' : ''; ?>>Paid</option>
-                                                    <option value="Unpaid" <?php echo ($rental['Status'] === 'Unpaid') ? 'selected' : ''; ?>>Unpaid</option>
+                                                    <option value="Paid" <?php echo ($rental['Status'] === 'Paid') ? 'selected' : ''; ?>>Thanh Toán</option>
+                                                    <option value="Unpaid" <?php echo ($rental['Status'] === 'Unpaid') ? 'selected' : ''; ?>>Chưa Thanh Toán</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -289,7 +289,7 @@ $conn->close();
                                     <button type="submit" class="btn btn-primary" style="float: right;">Cập nhật trạng thái</button>
                                 </div>
                             </form>
-                            <?php generatePagination($currentPage, $totalPages); ?>
+                                <?php generatePagination($currentPage, $totalPages); ?>
                             <?php else: ?>
                                 <p>Không có dữ liệu thuê nhà.</p>
                             <?php endif; ?>             

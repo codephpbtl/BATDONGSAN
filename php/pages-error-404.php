@@ -11,7 +11,7 @@
     <meta name="description"
         content="Admin-Pro Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Admin-Pro Lite Template by WrapPixel</title>
+    <title>HTT - Admin</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/adminpro-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
@@ -41,7 +41,7 @@
                 <h1>404</h1>
                 <h3 class="text-uppercase">Page Not Found !</h3>
                 <p class="text-muted mt-4 mb-4">YOU SEEM TO BE TRYING TO FIND HIS WAY HOME</p>
-                <a href="index.html" class="btn btn-info btn-rounded waves-effect waves-light mb-5 text-white">Back to home</a>
+                <a href="/php/index.php" class="btn btn-info btn-rounded waves-effect waves-light mb-5 text-white">Back to home</a>
             </div>
             <footer class="footer text-center"> © 2021 Admin Pro by <a
                     href="https://www.wrappixel.com/">wrappixel.com</a> </footer>

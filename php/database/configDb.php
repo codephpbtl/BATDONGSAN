@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `rentals` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 ";
 
+
 $sql_storageunits = "
 CREATE TABLE IF NOT EXISTS `storageunits` (
   `UnitID` int(11) NOT NULL AUTO_INCREMENT,
@@ -39,12 +40,26 @@ CREATE TABLE IF NOT EXISTS `storageunits` (
   `Address` varchar(255) NOT NULL,
   `Image` text,
   `Capacity` float NOT NULL,
+  `Description` text,
+  `Date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `Rate` decimal(10,2) NOT NULL,
-  `Date` enum('hour','day','month') DEFAULT NULL,
   `Available` enum('Yes','No') NOT NULL,
   PRIMARY KEY (`UnitID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 ";
+
+
+// SQL query to create images table
+$sql_images = "
+CREATE TABLE IF NOT EXISTS `images` (
+  `ImageID` int(11) NOT NULL AUTO_INCREMENT,
+  `StorageUnitID` int(11) NOT NULL,
+  `ImageData` longblob NOT NULL,
+  PRIMARY KEY (`ImageID`),
+  FOREIGN KEY (`StorageUnitID`) REFERENCES `storageunits`(`UnitID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+";
+
 
 $sql_transactions = "
 CREATE TABLE IF NOT EXISTS `transactions` (
@@ -86,6 +101,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 if ($conn->query($sql_userrole) === TRUE &&
     $conn->query($sql_users) === TRUE &&
     $conn->query($sql_storageunits) === TRUE &&
+    $conn->query($sql_images) === TRUE &&
     $conn->query($sql_rentals) === TRUE &&
     $conn->query($sql_transactions) === TRUE) {
     echo "Các bảng đã được tạo thành công!";
